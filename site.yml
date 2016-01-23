@@ -1,0 +1,25 @@
+---
+
+- hosts: all
+  become: yes
+  gather_facts: yes
+  roles:
+    - role: docker_common
+
+- hosts: docker_engines
+  become: yes
+  roles:
+    - role: docker_engine
+    - role: docker_compose
+
+- hosts: docker_registries
+  become: yes
+  vars_files:
+    - vars/makevault.yml
+  roles:
+    - role: docker_engine
+    - role: docker_compose
+    - role: openssl
+      openssl_generator_complexity: 4096
+    - role: docker_registry
+      docker_registry_users: "{{ authorized_registry_users }}"

@@ -1,0 +1,3 @@
+---
+
+docker_engine_dns_server: "--dns 8.8.8.8"
