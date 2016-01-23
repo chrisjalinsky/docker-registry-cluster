@@ -20,10 +20,18 @@ docker1.lan                : ok=15   changed=15   unreachable=0    failed=0
 registry0.lan              : ok=30   changed=30   unreachable=0    failed=0 
 ```
 
-If you make changes to the Vagrantfile, like adding another host, or the Ansible playbook, update the cluster:
+If things go wrong, Sometimes its best to restart from scratch. In which case ``` vagrant destroy ``` is your friend.
+
+If you make changes to the Vagrantfile, like adding another host, or change the Ansible playbook, update the cluster:
 
 ```
 vagrant provision
+```
+
+or to reboot the cluster:
+
+```
+vagrant reload
 ```
 
 
@@ -38,7 +46,7 @@ registry0.lan
 =============
 
 An upstart script is present in /etc/init/docker-registry.conf which controls a docker-compose script located at /docker-registry/docker-compose.yml.
-The playbook deploys a script which generates self signed SSL certificates based on the hostname.
+The compose consists on the Docker Registry image linked with an nginx image. The nginx is a proxy to the registry. Update the nginx config file in roles/docker_registry/templates/nginx directory. Additionally, The playbook deploys a script which generates self signed SSL certificates based on the hostname.
 
 ```
 sudo start docker-registry
@@ -85,7 +93,7 @@ At the login prompt:
 ```
 username: testuser
 password: pass
-email: me@here.com
+email: me@example.com
 ```
 
 Once logged in, use the registry:
@@ -100,3 +108,10 @@ sudo docker push registry0.lan/ubuntu
 sudo docker pull registry0.lan/ubuntu
 
 ```
+
+Thanks to Digital Ocean, this ansible playbook and roles are loosely based on your guide:
+
+[How To Set Up a Private Docker Registry on Ubuntu 14.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-private-docker-registry-on-ubuntu-14-04)
+
+As well as all the contributors at Github Repo Ceph - Ansible, I like how their Vagrantfile is built and mine is based on it:
+[https://github.com/ceph/ceph-ansible](https://github.com/ceph/ceph-ansible)
