@@ -1,17 +1,20 @@
 Docker Registry
 ===============
-This playbook will be the building block for future development with containerization. The idea is to provision a set of hosts to work in Docker environments. The Vagrantfile by default builds 3 Ubuntu 14.04 LTS hosts:
+This playbook will be the building block for future development with containerization. The idea is to provision a set of hosts to work in Docker environments. The Vagrantfile by default builds 3 Ubuntu 14.04 LTS hosts: The roles expose many default variables to control output. view those a each roles default/main.yml. You can override in the playbook.
 
 * docker0.lan
 * docker1.lan
 * registry0.lan
 
 
-
 registry0.lan
-================
+=============
+
+An upstart script is present in /etc/init/docker-registry.conf which controls a docker-compose script located at /docker-registry/docker-compose.yml.
+The playbook deploys a script which generates self signed SSL certificates based on the hostname.
+
 ```
-start docker-registry
+sudo start docker-registry
 ```
 
 On docker0.lan and docker1.lan
