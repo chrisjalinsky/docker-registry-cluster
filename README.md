@@ -6,6 +6,33 @@ This playbook will be the building block for future development with containeriz
 * docker1.lan
 * registry0.lan
 
+To build the cluster:
+
+```
+vagrant up
+```
+Once provisioning in complete, Ansible with display play recap, if none failed, the hosts are ready:
+
+```
+PLAY RECAP ******************************************************************** 
+docker0.lan                : ok=15   changed=15   unreachable=0    failed=0   
+docker1.lan                : ok=15   changed=15   unreachable=0    failed=0   
+registry0.lan              : ok=30   changed=30   unreachable=0    failed=0 
+```
+
+If you make changes to the Vagrantfile, like adding another host, or the Ansible playbook, update the cluster:
+
+```
+vagrant provision
+```
+
+
+SSH into each box with vagrant like so:
+
+```
+vagrant ssh registry0.lan
+```
+
 
 registry0.lan
 =============
@@ -19,6 +46,14 @@ sudo start docker-registry
 
 On docker0.lan and docker1.lan
 ==============
+
+Log into each box like so:
+
+```
+vagrant ssh docker0.lan
+vagrant ssh docker1.lan
+```
+
 
 To begin using the registry, several steps must be performed. Since we are using self signed SSL certificates, we must share these with our cluster nodes. Docker Registry expects these to exist in a specific location, so the steps below handle that:
 
